@@ -1,19 +1,17 @@
 import styled from "styled-components";
 
-import { Movable } from "./common";
-
-const Wrapper = styled(Movable)`
+const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const ContextArea = () => {
+function ContextArea() {
   return (
     <Wrapper>
       <textarea></textarea>
       <button>Add context</button>
     </Wrapper>
   );
-};
+}
 
 export default ContextArea;

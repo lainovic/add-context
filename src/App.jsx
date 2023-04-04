@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
 import Header from "./components/Header";
-import Main from "./components/Main";
+import MainArea from "./components/MainArea";
+
+import { Margin } from "./components/common";
 
 const Wrapper = styled.div`
   display: flex;
@@ -12,8 +14,10 @@ const Wrapper = styled.div`
 function App() {
   return (
     <Wrapper>
-      <Header mb={42} />
-      <Main />
+      <Header />
+      <Margin mt={42}>
+        <MainArea />
+      </Margin>
     </Wrapper>
   );
 }

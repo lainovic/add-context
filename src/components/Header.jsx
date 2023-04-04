@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
-import { Movable } from "./common";
-
-const Wrapper = styled(Movable)`
+const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid var(--color-gray-700);
@@ -13,12 +11,12 @@ const Text = styled.h1`
   font-size: 2rem;
 `;
 
-const Header = ({ mb }) => {
+function Header() {
   return (
-    <Wrapper mb={mb}>
+    <Wrapper>
       <Text>Context Matters.</Text>
     </Wrapper>
   );
-};
+}
 
 export default Header;

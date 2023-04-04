@@ -3,9 +3,7 @@ import styled from "styled-components";
 import InputArea from "./InputArea";
 import ContextArea from "./ContextArea";
 
-import { Movable } from "./common";
-
-const Wrapper = styled(Movable)`
+const Wrapper = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -13,7 +11,7 @@ const Wrapper = styled(Movable)`
   height: 100%;
 `;
 
-const Main = () => {
+const MainArea = () => {
   return (
     <Wrapper>
       <InputArea />
@@ -23,4 +21,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default MainArea;

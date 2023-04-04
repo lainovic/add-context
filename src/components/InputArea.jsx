@@ -1,10 +1,8 @@
 import styled from "styled-components";
 
-import { Movable } from "./common";
+const Wrapper = styled.div``;
 
-const Wrapper = styled(Movable)``;
-
-const InputArea = () => {
+function InputArea() {
   return (
     <Wrapper>
       <form>
@@ -12,6 +10,6 @@ const InputArea = () => {
       </form>
     </Wrapper>
   );
-};
+}
 
 export default InputArea;
