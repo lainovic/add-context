@@ -1,22 +1,24 @@
 import styled from "styled-components";
 
 import Header from "./components/Header";
-import MainArea from "./components/MainArea";
-
+import Context from "./components/Context";
 import { Margin } from "./components/common";
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   min-height: 100%;
+  background-color: var(--color-black);
 `;
 
 function App() {
   return (
     <Wrapper>
-      <Header />
-      <Margin mt={42}>
-        <MainArea />
+      <Margin mt={24}>
+        <Header />
+        <Context />
       </Margin>
     </Wrapper>
   );
