@@ -4,7 +4,8 @@ import styled from "styled-components";
 import ImageInput from "./ImageInput";
 import AddContextButton from "./AddContextButton";
 import ContextInput from "./ContextInput";
-import { Margin } from "./common";
+import ContextOutput from "./ContextOutput";
+import { Margin, Spacer } from "./common";
 
 const Wrapper = styled.div`
   display: flex;
@@ -29,7 +30,6 @@ function usePastedImage(event) {
   React.useEffect(() => {
     function handlePaste(event) {
       const clipboardData = event.clipboardData || window.clipboardData;
-      console.log("---> enter handlePaste");
       if (!clipboardData) {
         return;
       }
@@ -51,7 +51,10 @@ function usePastedImage(event) {
 }
 
 const Context = () => {
+  const [context, setContext] = React.useState("");
+  const [addedContext, setAddedContext] = React.useState(false);
   const pastedImage = usePastedImage();
+
   return (
     <Wrapper>
       {pastedImage ? (
@@ -66,11 +69,21 @@ const Context = () => {
       <Margin mt={-24}>
         <IfSpan>if</IfSpan>
       </Margin>
-      <Margin mt={-30}>
-        <ContextInput />
-      </Margin>
-      <Margin mt={24} mb={24}>
-        <AddContextButton />
+      <Margin mt={-24} mb={24}>
+        {pastedImage && context !== "" && addedContext ? (
+          <ContextOutput text={context} />
+        ) : (
+          <>
+            <ContextInput setContext={setContext} />
+            <Spacer h={24} />
+            <AddContextButton
+              onPressed={() => {
+                if (context === "" || !pastedImage) return;
+                setAddedContext(true);
+              }}
+            />
+          </>
+        )}
       </Margin>
     </Wrapper>
   );

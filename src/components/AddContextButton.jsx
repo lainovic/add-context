@@ -22,14 +22,10 @@ const Button = styled.button`
   }
 `;
 
-function AddContextButton() {
+function AddContextButton({ onPressed }) {
   return (
     <Wrapper>
-      <Button
-        onClick={() => {
-          window.alert("Generated!");
-        }}
-      >
+      <Button onClick={onPressed}>
         <span>Add Context!</span>
       </Button>
     </Wrapper>

@@ -10,3 +10,7 @@ export const Margin = styled.div`
 export const ShiftBy = styled.div`
   transform: ${({ x, y }) => `translate(${x || 0}px, ${y || 0}px)`};
 `;
+
+export const Spacer = styled.div`
+  height: ${({h}) => `${h || 0}px`};
+`;
