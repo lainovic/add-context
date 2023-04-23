@@ -10,7 +10,6 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   min-height: 100%;
-  background-color: var(--color-black);
 `;
 
 function App() {

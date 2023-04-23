@@ -19,7 +19,6 @@ const IfSpan = styled.span`
   font-family: "Caveat", cursive;
   font-weight: 700;
   font-size: 4rem;
-  color: white;
   user-select: none;
   z-index: 1;
 `;
@@ -29,7 +28,7 @@ function usePastedImage(event) {
 
   React.useEffect(() => {
     function handlePaste(event) {
-      const clipboardData = event.clipboardData || window.clipboardData;
+      const clipboardData = event.clipboardData 
       if (!clipboardData) {
         return;
       }
@@ -61,12 +60,13 @@ const Context = () => {
         <img
           src={pastedImage}
           width="50%"
+          style={{ maxHeight: "800px" }}
           alt="Pasted from the clipboard"
         ></img>
       ) : (
         <ImageInput />
       )}
-      <Margin mt={-24}>
+      <Margin mt={-12}>
         <IfSpan>if</IfSpan>
       </Margin>
       <Margin mt={-24} mb={24}>

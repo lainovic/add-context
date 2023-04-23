@@ -10,11 +10,10 @@ const Wrapper = styled.div`
 const Text = styled.h1`
   user-select: none;
   padding: 16px;
-  color: white;
   font-size: 2rem;
   text-align: center;
   & span {
-    color: yellow;
+    color: var(--color-dark);
     text-transform: lowercase;
     font-size: 3rem;
     font-family: "Alkatra", cursive;

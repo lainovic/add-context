@@ -18,6 +18,7 @@ const Button = styled.button`
   color: white;
   &:hover {
     background-color: white;
+    border-color: var(--color-black);
     color: black;
   }
 `;

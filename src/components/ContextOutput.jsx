@@ -6,13 +6,7 @@ const Wrapper = styled.div`
   justify-content: center;
   width: 300px;
   height: 120px;
-  border: 4px solid var(--color-medium-gray);
-  transition: border-color 0.3s ease;
-  &:hover {
-    border-color: white;
-  }
   font-family: "Alkatra", cursive;
-  color: white;
 `;
 
 function ContextOutput({ text }) {

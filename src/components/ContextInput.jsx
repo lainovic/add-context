@@ -6,32 +6,26 @@ const Wrapper = styled.div`
   justify-content: center;
   width: 300px;
   height: 120px;
-  border: 4px solid var(--color-medium-gray);
-  transition: border-color 0.3s ease;
-  &:hover {
-    border-color: white;
-  }
 `;
 
 const TextArea = styled.textarea`
   display: block;
-  font-family: "Roboto", sans-serif;
+  font-family: "roboto", sans-serif;
   width: 100%;
   height: 100%;
   padding: 10px;
   resize: none;
   transition: border-color 0.3s ease;
-  border: none;
-  background-color: var(--color-dark-gray);
-  color: white;
+  border: 1px solid white;
+  outline: none;
   &::placeholder {
-    color: white;
+      text-align: center;
   }
   &:focus::placeholder {
     color: transparent;
   }
   &:hover {
-    border-color: white;
+    border-color: var(--color-light-gray);
   }
 `;
 
@@ -39,7 +33,7 @@ function ContextInput({ setContext }) {
   return (
     <Wrapper>
       <TextArea
-        placeholder="Enter context."
+        placeholder="Enter context here."
         onChange={(event) => {
           setContext(event.target.value);
         }}
