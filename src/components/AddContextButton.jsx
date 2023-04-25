@@ -25,11 +25,9 @@ const Button = styled.button`
 
 function AddContextButton({ onPressed }) {
   return (
-    <Wrapper>
       <Button onClick={onPressed}>
         <span>Add Context!</span>
       </Button>
-    </Wrapper>
   );
 }
 

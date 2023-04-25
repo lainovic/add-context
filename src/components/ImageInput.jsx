@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -33,12 +34,24 @@ const Input = styled.input`
   }
 `;
 
-function ImageInput() {
+function ImageInput({onEnterPressed}) {
+  const [text, setText] = React.useState("");
+
   return (
     <Wrapper>
-      <Form>
-        <Input type="url" placeholder="Paste an image or its URL here." />
-      </Form>
+      <Form
+    onSubmit={(e) => {
+      e.preventDefault();
+      onEnterPressed(text);
+    }}>
+    <Input 
+      type="url" 
+      value={text}
+      onChange={(e) => {
+        setText(e.target.value);
+      }}
+      placeholder="Paste an image or its URL here." />
+    </Form>
     </Wrapper>
   );
 }

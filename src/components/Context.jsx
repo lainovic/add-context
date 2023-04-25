@@ -52,24 +52,24 @@ function usePastedImage(event) {
 const Context = () => {
   const [context, setContext] = React.useState("");
   const [addedContext, setAddedContext] = React.useState(false);
+  const [imageUrl, setImageUrl] = React.useState("");
   const pastedImage = usePastedImage();
 
   return (
     <Wrapper>
-      {pastedImage ? (
+      {pastedImage || imageUrl ? (
         <img
-          src={pastedImage}
+          src={pastedImage || imageUrl}
           width="50%"
           style={{ maxHeight: "800px" }}
           alt="Pasted from the clipboard"
         ></img>
       ) : (
-        <ImageInput />
+        <ImageInput onEnterPressed={setImageUrl}/>
       )}
       <Margin mt={-12}>
         <IfSpan>if</IfSpan>
       </Margin>
-      <Margin mt={-24} mb={24}>
         {pastedImage && context !== "" && addedContext ? (
           <ContextOutput text={context} />
         ) : (
@@ -84,7 +84,7 @@ const Context = () => {
             />
           </>
         )}
-      </Margin>
+            <Spacer h={24} />
     </Wrapper>
   );
 };
