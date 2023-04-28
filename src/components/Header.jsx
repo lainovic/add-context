@@ -23,7 +23,7 @@ const Text = styled.h1`
 function Header() {
   return (
     <Wrapper>
-      <img src="static/images/front.png" width={120} alt="hello there!" />
+      <img src="static/images/animated_front.gif" width={120} alt="hello there!" />
       <Text>
         context <span>matters</span>
       </Text>
