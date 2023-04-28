@@ -7,6 +7,8 @@ import ContextInput from "./ContextInput";
 import ContextOutput from "./ContextOutput";
 import { Margin, Spacer } from "./common";
 
+import { v4 as uuidv4 } from 'uuid';
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -23,12 +25,12 @@ const IfSpan = styled.span`
   z-index: 1;
 `;
 
-function usePastedImage(event) {
+function usePastedImage() {
   const [image, setImage] = React.useState(null);
 
   React.useEffect(() => {
     function handlePaste(event) {
-      const clipboardData = event.clipboardData 
+      const clipboardData = event.clipboardData
       if (!clipboardData) {
         return;
       }
@@ -51,7 +53,7 @@ function usePastedImage(event) {
 
 const Context = () => {
   const [context, setContext] = React.useState("");
-  const [addedContext, setAddedContext] = React.useState(false);
+  const [status, setStatus] = React.useState(false);
   const [imageUrl, setImageUrl] = React.useState("");
   const pastedImage = usePastedImage();
 
@@ -65,26 +67,31 @@ const Context = () => {
           alt="Pasted from the clipboard"
         ></img>
       ) : (
-        <ImageInput onEnterPressed={setImageUrl}/>
+        <ImageInput onEnterPressed={setImageUrl} />
       )}
       <Margin mt={-12}>
         <IfSpan>if</IfSpan>
       </Margin>
-        {pastedImage && context !== "" && addedContext ? (
-          <ContextOutput text={context} />
-        ) : (
-          <>
-            <ContextInput setContext={setContext} />
-            <Spacer h={24} />
-            <AddContextButton
-              onPressed={() => {
-                if (context === "" || !pastedImage) return;
-                setAddedContext(true);
-              }}
-            />
-          </>
-        )}
-            <Spacer h={24} />
+      {(pastedImage || imageUrl) && context !== "" && status ? (
+        <ContextOutput text={context} />
+      ) : (
+        <>
+          <ContextInput setContext={setContext} />
+          <Spacer h={24} />
+          <AddContextButton
+            onPressed={() => {
+              if (context === "" || (!pastedImage && !imageUrl)) return;
+              setStatus(true);
+              const contextEntity = {
+                imageUrl,
+                context
+              }
+              localStorage.setItem(uuidv4(), JSON.stringify(contextEntity))
+            }}
+          />
+        </>
+      )}
+      <Spacer h={24} />
     </Wrapper>
   );
 };
