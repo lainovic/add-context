@@ -95,12 +95,12 @@ async function saveEntityToDatabase(imageUrl, text) {
     return { status: response.status, error: `The request failed with: ${response.statusText}` };
   }
 
-  const { url, error } = await response.json();
+  const { data, error } = await response.json();
   if (error) {
     console.log({ error });
   }
-  console.log("---> entity saved to the database: ", url);
-  return url;
+  console.log("---> entity saved to the database: ", data.id);
+  return { id: data.id };
 }
 
 async function onAddContext(image, text, setContext) {
@@ -113,7 +113,7 @@ async function onAddContext(image, text, setContext) {
       console.error({ imageUrlError });
       return;
     }
-    const { url: entityUrl, error: entityUrlError } = await saveEntityToDatabase(imageUrl, text);
+    const { id: entityId, error: entityUrlError } = await saveEntityToDatabase(imageUrl, text);
     if (entityUrlError) {
       console.error({ entityUrlError });
       return;
