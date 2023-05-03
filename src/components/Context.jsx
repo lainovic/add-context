@@ -7,8 +7,6 @@ import ContextInput from "./ContextInput";
 import ContextOutput from "./ContextOutput";
 import { Margin, Spacer } from "./common";
 
-import { v4 as uuidv4 } from 'uuid';
-
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -25,11 +23,9 @@ const IfSpan = styled.span`
   z-index: 1;
 `;
 
-function usePastedImage() {
-  const [image, setImage] = React.useState(null);
-
+function usePastedImage(setImage) {
   React.useEffect(() => {
-    function handlePaste(event) {
+    async function handlePaste(event) {
       const clipboardData = event.clipboardData
       if (!clipboardData) {
         return;
@@ -39,55 +35,125 @@ function usePastedImage() {
         const item = items[i];
         if (item.type.indexOf("image") !== -1) {
           const blob = item.getAsFile();
-          const url = URL.createObjectURL(blob);
-          setImage(url);
+          const type = item.type.split('/')[1];
+          setImage({ blob, type });
           break;
         }
       }
     }
     window.addEventListener("paste", handlePaste);
   }, []);
+}
 
-  return image;
+async function useImageFromUrl(imageUrl, setImage) {
+  const res = await fetch(imageUrl)
+  const blob = await res.blob();
+  const type = res.headers.get("content-type");
+  setImage({ blob, type });
+}
+
+async function saveImageToBucket(image) {
+  const ep = "http://localhost:3000/api/image";
+  //const ep = "https://add-context-proxy.vercel.app/image";
+
+  const formData = new FormData();
+  formData.append("image-data", image.blob);
+  formData.append("image-type", image.type);
+  const req = {
+    method: "POST",
+    body: formData
+  };
+  console.log("---> sending the request to the bucket: ", req);
+
+  const response = await fetch(ep, req);
+  if (!response.ok) {
+    return { status: response.status, imageUrlError: `The request failed with: ${response.statusText}` };
+  }
+
+  const { url, error } = await response.json();
+  if (error) {
+    return { status: response.status, error };
+  }
+  console.log("---> image saved in the bucket: ", url);
+  return { url };
+}
+
+async function saveEntityToDatabase(imageUrl, text) {
+  const entity = { imageUrl, text };
+
+  const ep = "http://localhost:3000/api/context";
+  //const ep = "https://add-context-proxy.vercel.app/context";
+
+  const req = {
+    method: "POST",
+    body: JSON.stringify(entity)
+  };
+  console.log("---> sending the request to the database: ", req);
+
+  const response = await fetch(ep, req);
+  if (!response.ok) {
+    return { status: response.status, error: `The request failed with: ${response.statusText}` };
+  }
+
+  const { url, error } = await response.json();
+  if (error) {
+    console.log({ error });
+  }
+  console.log("---> entity saved to the database: ", url);
+  return url;
+}
+
+async function onAddContext(image, text, setContext) {
+  if (text === "" || !image) {
+    return;
+  }
+  try {
+    const { url: imageUrl, error: imageUrlError } = await saveImageToBucket(image);
+    if (imageUrlError) {
+      console.error({ imageUrlError });
+      return;
+    }
+    const { url: entityUrl, error: entityUrlError } = await saveEntityToDatabase(imageUrl, text);
+    if (entityUrlError) {
+      console.error({ entityUrlError });
+      return;
+    }
+    setContext(true);
+  } catch (error) {
+    console.error(error);
+    return;
+  }
 }
 
 const Context = () => {
-  const [context, setContext] = React.useState("");
-  const [status, setStatus] = React.useState(false);
-  const [imageUrl, setImageUrl] = React.useState("");
-  const pastedImage = usePastedImage();
+  const [text, setText] = React.useState("");
+  const [context, setContext] = React.useState(false);
+  const [image, setImage] = React.useState(null);
+  usePastedImage(setImage);
 
   return (
     <Wrapper>
-      {pastedImage || imageUrl ? (
+      {image ? (
         <img
-          src={pastedImage || imageUrl}
+          src={URL.createObjectURL(image.blob)}
           width="50%"
           style={{ maxHeight: "800px" }}
-          alt="Pasted from the clipboard"
+          alt="A given image."
         ></img>
       ) : (
-        <ImageInput onEnterPressed={setImageUrl} />
+        <ImageInput onEnterPressed={url => useImageFromUrl(url, setImage)} />
       )}
       <Margin mt={-12}>
         <IfSpan>if</IfSpan>
       </Margin>
-      {(pastedImage || imageUrl) && context !== "" && status ? (
-        <ContextOutput text={context} />
+      {context ? (
+        <ContextOutput text={text} />
       ) : (
         <>
-          <ContextInput setContext={setContext} />
+          <ContextInput setText={setText} />
           <Spacer h={24} />
           <AddContextButton
-            onPressed={() => {
-              if (context === "" || (!pastedImage && !imageUrl)) return;
-              setStatus(true);
-              const contextEntity = {
-                imageUrl,
-                context
-              }
-              localStorage.setItem(uuidv4(), JSON.stringify(contextEntity))
-            }}
+            onPressed={async () => onAddContext(image, text, setContext)}
           />
         </>
       )}
@@ -97,3 +163,4 @@ const Context = () => {
 };
 
 export default Context;
+

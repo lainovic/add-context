@@ -50,7 +50,7 @@ function ImageInput({onEnterPressed}) {
       onChange={(e) => {
         setText(e.target.value);
       }}
-      placeholder="Paste an image or its URL here." />
+      placeholder="Paste an image, or its URL here and press <Enter>." />
     </Form>
     </Wrapper>
   );

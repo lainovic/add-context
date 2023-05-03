@@ -29,13 +29,13 @@ const TextArea = styled.textarea`
   }
 `;
 
-function ContextInput({ setContext }) {
+function ContextInput({ setText }) {
   return (
     <Wrapper>
       <TextArea
         placeholder="Enter context here."
         onChange={(event) => {
-          setContext(event.target.value);
+          setText(event.target.value);
         }}
       ></TextArea>
     </Wrapper>
