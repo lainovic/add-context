@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 import Header from "./components/Header";
-import Context from "./components/Context";
+import ContextPage from "./ContextPage";
 import { Margin } from "./components/common";
+import { Outlet } from "react-router-dom";
 
 const Wrapper = styled.div`
   display: flex;
@@ -17,7 +18,8 @@ function App() {
     <Wrapper>
       <Margin mt={24}>
         <Header />
-        <Context />
+        <Outlet />
+        <ContextPage />
       </Margin>
     </Wrapper>
   );

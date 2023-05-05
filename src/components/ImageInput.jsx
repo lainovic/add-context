@@ -34,24 +34,24 @@ const Input = styled.input`
   }
 `;
 
-function ImageInput({onEnterPressed}) {
+function ImageInput({ onImageUrlEntered }) {
   const [text, setText] = React.useState("");
 
   return (
     <Wrapper>
       <Form
-    onSubmit={(e) => {
-      e.preventDefault();
-      onEnterPressed(text);
-    }}>
-    <Input 
-      type="url" 
-      value={text}
-      onChange={(e) => {
-        setText(e.target.value);
-      }}
-      placeholder="Paste an image, or its URL here and press <Enter>." />
-    </Form>
+        onSubmit={(e) => {
+          e.preventDefault();
+          onImageUrlEntered(text);
+        }}>
+        <Input
+          type="url"
+          value={text}
+          onChange={(e) => {
+            setText(e.target.value);
+          }}
+          placeholder="Paste an image, or its URL here and press <Enter>." />
+      </Form>
     </Wrapper>
   );
 }
