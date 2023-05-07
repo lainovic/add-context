@@ -11,17 +11,17 @@ export async function saveImageToBucket(image) {
 	};
 	console.log("---> sending the request to the bucket: ", req);
 
-	const response = await fetch(ep, req);
-	if (!response.ok) {
-		return { status: response.status, imageUrlError: `The request failed with: ${response.statusText}` };
+	const res = await fetch(ep, req);
+	if (!res.ok) {
+		return { status: res.status, error: `The request failed with: ${res.statusText}` };
 	}
 
-	const { url, error } = await response.json();
+	const { data, error } = await res.json();
 	if (error) {
-		return { status: response.status, error };
+		return { status: res.status, error };
 	}
-	console.log("---> image saved in the bucket: ", url);
-	return { url };
+	console.log("---> image saved in the bucket under URL: ", data.url);
+	return { url: data.url };
 }
 
 export async function saveContextToDatabase(imageUrl, text) {
@@ -34,18 +34,46 @@ export async function saveContextToDatabase(imageUrl, text) {
 		method: "POST",
 		body: JSON.stringify(entity)
 	};
-	console.log("---> sending the request to the database: ", req);
 
-	const response = await fetch(ep, req);
-	if (!response.ok) {
-		return { status: response.status, error: `The request failed with: ${response.statusText}` };
+	console.log("---> sending the request to the database: ", req);
+	const res = await fetch(ep, req);
+	if (!res.ok) {
+		return { status: res.status, error: `The request failed with: ${res.statusText}` };
 	}
 
-	const { data, error } = await response.json();
+	const { data, error } = await res.json();
 	if (error) {
 		console.log({ error });
+		return { error };
 	}
-	console.log("---> entity saved to the database: ", data.id);
+	console.log("---> entity saved to the database under ID: ", data.id);
 	return { id: data.id };
+}
+
+export async function getContextFromDatabase(contextId) {
+	const ep = "http://localhost:3000/api/context";
+	//const ep = "https://add-context-proxy.vercel.app/context";
+
+	console.log("---> sending the request to the database for the id: ", contextId);
+	let res = await fetch(`${ep}?id=${contextId}`);
+	if (!res.ok) {
+		return { status: res.status, error: `The request failed with: ${res.statusText}` };
+	}
+	const { data, error } = await res.json();
+	if (error) {
+		console.log({ error });
+		return { error };
+	}
+	if (!data) {
+		return null;
+	}
+	const imageUrl = data.imageUrl;
+	console.log("---> sending the request to the storage for the image: ", imageUrl);
+	res = await fetch(imageUrl);
+	if (!res.ok) {
+		return ({ status: res.status, error: `Error while downloading an image: ${res.statusText}` });
+	}
+	const blob = await res.blob();
+	return { image: { blob }, text: data.text };
 }
 

@@ -9,7 +9,8 @@ import "./config/reset.css";
 import "./config/constants.css";
 import App from "./App";
 import ErrorPage from "./ErrorPage";
-import ContextOutput from "./components/ContextOutput";
+import Context from "./Context";
+import ContextRemoteSnapshot, { loader as contextIdLoader } from "./ContextRemoteSnapshot";
 
 const router = createBrowserRouter([
   {
@@ -18,12 +19,18 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "contexts/:contextId",
-        element: <ContextOutput />
+        path: "",
+        element: <Context />
+      },
+      {
+        path: ":contextId",
+        element: <ContextRemoteSnapshot />,
+        loader: contextIdLoader,
       }
     ]
   },
 ]);
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <RouterProvider router={router} />

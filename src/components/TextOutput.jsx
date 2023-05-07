@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   font-family: "Alkatra", cursive;
 `;
 
-function ContextOutput({ text }) {
+function TextOutput({ text }) {
   return (
     <Wrapper>
       <div>{text}</div>
@@ -18,4 +18,4 @@ function ContextOutput({ text }) {
   );
 }
 
-export default ContextOutput;
+export default TextOutput;

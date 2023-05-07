@@ -2,10 +2,12 @@ import React from "react";
 import styled from "styled-components";
 
 import ImageInput from "./components/ImageInput";
-import ContextInput from "./components/ContextInput";
-import ContextOutput from "./components/ContextOutput";
+import TextInput from "./components/TextInput";
+import TextOutput from "./components/TextOutput";
 import ContextTemplate from "./components/ContextTemplate"
 import ImageOutput from "./components/ImageOutput";
+
+import { Spacer } from "./components/common";
 
 import { saveImageToBucket, saveContextToDatabase } from "./helpers/db.helpers";
 
@@ -60,7 +62,25 @@ async function onAddContext(image, text, setContext) {
   }
 }
 
-const ContextPage = () => {
+const Button = styled.button`
+  border: 2px solid white;
+  border-radius: 16px;
+  padding: 8px 24px;
+  transition: background-color 0.3s ease;
+  & span {
+    font-family: "Roboto", sans-serif;
+    text-transform: uppercase;
+  }
+  background-color: black;
+  color: white;
+  &:hover {
+    background-color: white;
+    border-color: var(--color-black);
+    color: black;
+  }
+`;
+
+const Context = () => {
   const [text, setText] = React.useState("");
   const [context, setContext] = React.useState(false);
   const [image, setImage] = React.useState(null);
@@ -73,9 +93,15 @@ const ContextPage = () => {
   )
 
   const TextComponent = context ? (
-    <ContextOutput text={text} />
+    <TextOutput text={text} />
   ) : (
-    <ContextInput setText={setText} onTextEntered={() => onAddContext(image, text, setContext)} />
+    <>
+      <TextInput setText={setText} />
+      <Spacer h={24} />
+      <Button onClick={() => onAddContext(image, text, setContext)}>
+        <span>Add Context</span>
+      </Button>
+    </>
   )
 
   return <ContextTemplate
@@ -84,5 +110,4 @@ const ContextPage = () => {
   />
 };
 
-export default ContextPage;
-
+export default Context;

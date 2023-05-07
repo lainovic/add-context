@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Spacer } from "./common";
 
 const Wrapper = styled.div`
   display: flex;
@@ -30,25 +29,7 @@ const TextArea = styled.textarea`
   }
 `;
 
-const Button = styled.button`
-  border: 2px solid white;
-  border-radius: 16px;
-  padding: 8px 24px;
-  transition: background-color 0.3s ease;
-  & span {
-    font-family: "Roboto", sans-serif;
-    text-transform: uppercase;
-  }
-  background-color: black;
-  color: white;
-  &:hover {
-    background-color: white;
-    border-color: var(--color-black);
-    color: black;
-  }
-`;
-
-function ContextInput({ setText, onTextEntered }) {
+function TextInput({ setText }) {
   return (
     <>
       <Wrapper>
@@ -59,12 +40,8 @@ function ContextInput({ setText, onTextEntered }) {
           }}
         ></TextArea>
       </Wrapper>
-      <Spacer h={24} />
-      <Button onClick={onTextEntered}>
-        <span>Add Context</span>
-      </Button>
     </>
   );
 }
 
-export default ContextInput;
+export default TextInput;
