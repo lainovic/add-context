@@ -3,6 +3,7 @@ function ImageOutput({ image }) {
     <img
       src={image}
       alt="A given image."
+      height="500px"
     ></img>
   )
 }

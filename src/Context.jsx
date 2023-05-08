@@ -1,13 +1,13 @@
 import React from "react";
-import styled from "styled-components";
+
+import { Navigate } from "react-router-dom";
 
 import ImageInput from "./components/ImageInput";
 import TextInput from "./components/TextInput";
-import TextOutput from "./components/TextOutput";
 import ContextTemplate from "./components/ContextTemplate"
 import ImageOutput from "./components/ImageOutput";
-
-import { Spacer } from "./components/common";
+import Button from "./components/Button";
+import { Spacer } from "./helpers/layout.helpers";
 
 import { saveImageToBucket, saveContextToDatabase } from "./helpers/db.helpers";
 
@@ -40,7 +40,7 @@ async function useImageFromUrl(imageUrl, setImage) {
   setImage({ blob, type });
 }
 
-async function onAddContext(image, text, setContext) {
+async function onAddContext(image, text, setContextId) {
   if (text === "" || !image) {
     return;
   }
@@ -55,36 +55,22 @@ async function onAddContext(image, text, setContext) {
       console.error({ entityUrlError });
       return;
     }
-    setContext(true);
+    setContextId(entityId);
   } catch (error) {
     console.error(error);
     return;
   }
 }
 
-const Button = styled.button`
-  border: 2px solid white;
-  border-radius: 16px;
-  padding: 8px 24px;
-  transition: background-color 0.3s ease;
-  & span {
-    font-family: "Roboto", sans-serif;
-    text-transform: uppercase;
-  }
-  background-color: black;
-  color: white;
-  &:hover {
-    background-color: white;
-    border-color: var(--color-black);
-    color: black;
-  }
-`;
-
 const Context = () => {
   const [text, setText] = React.useState("");
-  const [context, setContext] = React.useState(false);
   const [image, setImage] = React.useState(null);
+  const [contextId, setContextId] = React.useState(null);
   usePastedImage(setImage);
+
+  if (contextId) {
+    return <Navigate to={`/${contextId}`} replace={true} />
+  }
 
   const ImageComponent = image ? (
     <ImageOutput image={URL.createObjectURL(image.blob)} />
@@ -92,17 +78,14 @@ const Context = () => {
     <ImageInput onImageUrlEntered={url => useImageFromUrl(url, setImage)} />
   )
 
-  const TextComponent = context ? (
-    <TextOutput text={text} />
-  ) : (
+  const TextComponent =
     <>
       <TextInput setText={setText} />
       <Spacer h={24} />
-      <Button onClick={() => onAddContext(image, text, setContext)}>
+      <Button onClick={() => onAddContext(image, text, setContextId)}>
         <span>Add Context</span>
       </Button>
     </>
-  )
 
   return <ContextTemplate
     ImageComponent={ImageComponent}

@@ -2,35 +2,21 @@ import React from "react";
 import styled from "styled-components";
 
 import html2canvas from "html2canvas";
+import { toast, ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css";
 
 import ContextTemplate from "./components/ContextTemplate"
 import TextOutput from "./components/TextOutput";
 import ImageOutput from "./components/ImageOutput";
-import { Margin } from "./components/common";
+import { Margin } from "./helpers/layout.helpers";
+import Button from "./components/Button";
 
 const Wrapper = styled.div`
   display:flex;
   flex-direction:column;
   align-items: center;
   justify-content: center;
-`;
-
-const Button = styled.button`
-  border: 2px solid white;
-  border-radius: 16px;
-  padding: 8px 24px;
-  transition: background-color 0.3s ease;
-  & span {
-    font-family: "Roboto", sans-serif;
-    text-transform: uppercase;
-  }
-  background-color: black;
-  color: white;
-  &:hover {
-    background-color: white;
-    border-color: var(--color-black);
-    color: black;
-  }
+  margin-bottom: 20px;
 `;
 
 function ContextSnapshot({ image, text }) {
@@ -41,19 +27,32 @@ function ContextSnapshot({ image, text }) {
       canvas.toBlob(blob => {
         const item = new ClipboardItem({ "image/png": blob });
         navigator.clipboard.write([item]);
+        toast.info('Image copied into the clipboard.', {
+          position: "bottom-center",
+          autoClose: 1000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: false,
+          progress: undefined,
+          theme: "light",
+        })
       });
     });
   };
 
   if (image === null && text === null) {
-    return <div>Loading...</div>;
+    return <div style={{
+      fontFamily: ["Alkatra", "cursive"]
+    }}>Loading...</div>;
   }
 
   const ImageComponent = <ImageOutput image={URL.createObjectURL(image.blob)} />
   const TextComponent = <>
     <TextOutput text={text} />
     <div style={{
-      fontFamily: ["Alkatra", "cursive"]
+      fontFamily: ["Alkatra", "cursive"],
+      color: "gray"
     }}>contextify.me</div>
   </>
 
@@ -64,6 +63,18 @@ function ContextSnapshot({ image, text }) {
         TextComponent={TextComponent}
       />
     </Margin>
+    <ToastContainer
+      position="bottom-center"
+      autoClose={1000}
+      hideProgressBar
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable={false}
+      pauseOnHover
+      theme="light"
+    />
     <Button onClick={handleCapture}><span>Copy as image</span></Button>
   </Wrapper>
 };

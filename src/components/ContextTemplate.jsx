@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Margin, Spacer } from "./common";
+import { Margin, Spacer } from "../helpers/layout.helpers";
 
 const Wrapper = styled.div`
   display: flex;

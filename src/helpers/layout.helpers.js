@@ -18,3 +18,4 @@ export const Spacer = styled.div`
 export const WidthInPercent = styled.div`
   width: ${({w}) => `${w || 100}%`};
 `;
+

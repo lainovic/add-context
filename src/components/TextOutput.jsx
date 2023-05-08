@@ -5,15 +5,15 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  width: 300px;
   height: 120px;
+  width: 100%;
   font-family: "Alkatra", cursive;
 `;
 
 function TextOutput({ text }) {
   return (
     <Wrapper>
-      <div>{text}</div>
+      <div style={{ maxWidth: "100%" }}>{text}</div>
     </Wrapper>
   );
 }
