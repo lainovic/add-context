@@ -83,7 +83,7 @@ const Context = () => {
       <TextInput setText={setText} />
       <Spacer h={24} />
       <Button onClick={() => onAddContext(image, text, setContextId)}>
-        <span>Add Context</span>
+        <span>Contextify</span>
       </Button>
     </>
 
