@@ -19,9 +19,9 @@ const IfSpan = styled.span`
   z-index: 1;
 `;
 
-function ContextTemplate({ ImageComponent, TextComponent }) {
+const ContextTemplate = React.forwardRef(({ ImageComponent, TextComponent }, ref) => {
   return (
-    <Wrapper>
+    <Wrapper ref={ref}>
       {ImageComponent}
       <Margin mt={-12}>
         <IfSpan>if</IfSpan>
@@ -30,7 +30,7 @@ function ContextTemplate({ ImageComponent, TextComponent }) {
       <Spacer h={24} />
     </Wrapper >
   );
-};
+});
 
 export default ContextTemplate;
 

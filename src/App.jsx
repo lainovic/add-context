@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import Header from "./components/Header";
-import { Margin } from "./components/common";
+import { Margin, WidthInPercent } from "./components/common";
 import { Outlet } from "react-router-dom";
 
 const Wrapper = styled.div`
@@ -15,10 +15,12 @@ const Wrapper = styled.div`
 function App() {
   return (
     <Wrapper>
-      <Margin mt={24}>
-        <Header />
-        <Outlet />
-      </Margin>
+      <WidthInPercent w={50}>
+        <Margin mt={24}>
+          <Header />
+          <Outlet />
+        </Margin>
+      </WidthInPercent>
     </Wrapper>
   );
 }

@@ -14,3 +14,7 @@ export const ShiftBy = styled.div`
 export const Spacer = styled.div`
   height: ${({h}) => `${h || 0}px`};
 `;
+
+export const WidthInPercent = styled.div`
+  width: ${({w}) => `${w || 100}%`};
+`;
