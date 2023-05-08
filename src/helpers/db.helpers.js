@@ -1,6 +1,6 @@
 export async function saveImageToBucket(image) {
-	const ep = "http://localhost:3000/api/image";
-	//const ep = "https://add-context-proxy.vercel.app/image";
+	//const ep = "http://localhost:3000/api/image";
+	const ep = "https://add-context-proxy.vercel.app/image";
 
 	const formData = new FormData();
 	formData.append("image-data", image.blob);
@@ -27,8 +27,8 @@ export async function saveImageToBucket(image) {
 export async function saveContextToDatabase(imageUrl, text) {
 	const entity = { imageUrl, text };
 
-	const ep = "http://localhost:3000/api/context";
-	//const ep = "https://add-context-proxy.vercel.app/context";
+	//const ep = "http://localhost:3000/api/context";
+	const ep = "https://add-context-proxy.vercel.app/context";
 
 	const req = {
 		method: "POST",
@@ -51,8 +51,8 @@ export async function saveContextToDatabase(imageUrl, text) {
 }
 
 export async function getContextFromDatabase(contextId) {
-	const ep = "http://localhost:3000/api/context";
-	//const ep = "https://add-context-proxy.vercel.app/context";
+	//const ep = "http://localhost:3000/api/context";
+	const ep = "https://add-context-proxy.vercel.app/context";
 
 	console.log("---> sending the request to the database for the id: ", contextId);
 	let res = await fetch(`${ep}?id=${contextId}`);
