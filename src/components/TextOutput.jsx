@@ -1,19 +1,14 @@
 import styled from "styled-components";
 
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  height: 120px;
-  width: 100%;
+const Wrapper = styled.pre`
   font-family: "Alkatra", cursive;
+  text-align: center;
 `;
 
 function TextOutput({ text }) {
   return (
     <Wrapper>
-      <div style={{ maxWidth: "100%" }}>{text}</div>
+      {text}
     </Wrapper>
   );
 }

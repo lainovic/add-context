@@ -7,6 +7,12 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
+const ImageWrapper = styled.div`
+`;
+
+const TextWrapper = styled.div`
+`;
+
 const Text = styled.h1`
   user-select: none;
   padding: 16px;
@@ -23,10 +29,14 @@ const Text = styled.h1`
 function Header() {
   return (
     <Wrapper>
-      <img src="static/images/animated_front.gif" width={120} alt="hello there!" />
-      <Text>
-        context <span>matters</span>
-      </Text>
+      <ImageWrapper>
+        <img src="static/images/animated_front.gif" width={120} alt="the flaming orange" />
+      </ImageWrapper>
+      <TextWrapper>
+        <Text>
+          context <span>matters</span>
+        </Text>
+      </TextWrapper>
     </Wrapper>
   );
 }

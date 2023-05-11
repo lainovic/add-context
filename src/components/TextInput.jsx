@@ -10,8 +10,8 @@ const Wrapper = styled.div`
 
 const TextArea = styled.textarea`
   display: block;
-  font-family: "roboto", sans-serif;
   width: 100%;
+  font-family: "Alkatra", "cursive";
   height: 100%;
   padding: 10px;
   resize: none;

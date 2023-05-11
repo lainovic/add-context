@@ -8,8 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 import ContextTemplate from "./components/ContextTemplate"
 import TextOutput from "./components/TextOutput";
 import ImageOutput from "./components/ImageOutput";
-import { Margin } from "./helpers/layout.helpers";
 import Button from "./components/Button";
+import { Margin } from "./helpers/layout.helpers";
 
 const Wrapper = styled.div`
   display:flex;
@@ -17,6 +17,28 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
+  font-family: "Alkatra", "cursive";
+`;
+
+const ContextWrapper = styled.div`
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+const UrlWrapper = styled.span`
+  color: gray;
+  text-align: center;
+`;
+
+const TextComponentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 function ContextSnapshot({ image, text }) {
@@ -41,41 +63,37 @@ function ContextSnapshot({ image, text }) {
     });
   };
 
-  if (image === null && text === null) {
-    return <div style={{
-      fontFamily: ["Alkatra", "cursive"]
-    }}>Loading...</div>;
-  }
-
   const ImageComponent = <ImageOutput image={URL.createObjectURL(image.blob)} />
-  const TextComponent = <>
+
+  const TextComponent = <TextComponentWrapper>
     <TextOutput text={text} />
-    <div style={{
-      fontFamily: ["Alkatra", "cursive"],
-      color: "gray"
-    }}>contextify.me</div>
-  </>
+    <Margin mt={12} mb={12}>
+      <UrlWrapper>contextify.me</UrlWrapper>
+    </Margin>
+  </TextComponentWrapper>
 
   return <Wrapper>
-    <Margin mt={20} ref={captureRef}>
+    <ContextWrapper ref={captureRef}>
       <ContextTemplate
         ImageComponent={ImageComponent}
         TextComponent={TextComponent}
       />
-    </Margin>
-    <ToastContainer
-      position="bottom-center"
-      autoClose={1000}
-      hideProgressBar
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable={false}
-      pauseOnHover
-      theme="light"
-    />
-    <Button onClick={handleCapture}><span>Copy as image</span></Button>
+    </ContextWrapper>
+    <ButtonWrapper>
+      <Button onClick={handleCapture}><span>Copy as image</span></Button>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={1000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable={false}
+        pauseOnHover
+        theme="light"
+      />
+    </ButtonWrapper>
   </Wrapper>
 };
 

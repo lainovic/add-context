@@ -50,7 +50,9 @@ function ImageInput({ onImageUrlEntered }) {
           onChange={(e) => {
             setText(e.target.value);
           }}
-          placeholder="Paste an image, or its URL here and press <Enter>." />
+          onBlur={() => { onImageUrlEntered(text); }
+          }
+          placeholder="Paste an image, or its URL in here." />
       </Form>
     </Wrapper>
   );

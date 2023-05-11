@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 
 import { Navigate } from "react-router-dom";
 
@@ -10,6 +11,12 @@ import Button from "./components/Button";
 import { Spacer } from "./helpers/layout.helpers";
 
 import { saveImageToBucket, saveContextToDatabase } from "./helpers/db.helpers";
+
+const TextComponentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center
+`;
 
 function usePastedImage(setImage) {
   React.useEffect(() => {
@@ -62,7 +69,7 @@ async function onAddContext(image, text, setContextId) {
   }
 }
 
-const Context = () => {
+const ContextInput = () => {
   const [text, setText] = React.useState("");
   const [image, setImage] = React.useState(null);
   const [contextId, setContextId] = React.useState(null);
@@ -79,13 +86,13 @@ const Context = () => {
   )
 
   const TextComponent =
-    <>
+    <TextComponentWrapper>
       <TextInput setText={setText} />
       <Spacer h={24} />
       <Button onClick={() => onAddContext(image, text, setContextId)}>
         <span>Contextify</span>
       </Button>
-    </>
+    </TextComponentWrapper>
 
   return <ContextTemplate
     ImageComponent={ImageComponent}
@@ -93,4 +100,4 @@ const Context = () => {
   />
 };
 
-export default Context;
+export default ContextInput;
