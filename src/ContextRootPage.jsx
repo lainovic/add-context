@@ -9,16 +9,15 @@ const Wrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: 100%;
 `;
 
 function RootPage() {
   return (
-    <Padding pt={24} pb={24}>
-      <Wrapper>
-        <Header />
-        <ContextInput />
-      </Wrapper>
-    </Padding>
+    <Wrapper>
+      <Header />
+      <ContextInput />
+    </Wrapper>
   );
 }
 
