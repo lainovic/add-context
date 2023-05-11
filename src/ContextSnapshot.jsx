@@ -1,4 +1,6 @@
 import React from "react";
+import ReactDOM from "react-dom/client";
+
 import styled from "styled-components";
 
 import html2canvas from "html2canvas";
@@ -21,6 +23,7 @@ const Wrapper = styled.div`
 `;
 
 const ContextWrapper = styled.div`
+  padding: 12px;
 `;
 
 const ButtonWrapper = styled.div`
@@ -44,8 +47,22 @@ const TextComponentWrapper = styled.div`
 function ContextSnapshot({ image, text }) {
   const captureRef = React.useRef(null);
 
-  const handleCapture = () => {
-    html2canvas(captureRef.current).then(canvas => {
+  const handleCapture = async () => {
+    const root = document.createElement("div");
+    const url = (
+      <Margin mt={12} mb={12}>
+        <div
+          style={{ textAlign: "center" }}
+        >
+          <UrlWrapper>contextify.me</UrlWrapper>
+        </div>
+      </Margin>
+    )
+    ReactDOM.createRoot(root).render(url);
+    captureRef.current.appendChild(root);
+    setTimeout(async () => {
+      const canvas = await html2canvas(captureRef.current);
+      captureRef.current.removeChild(root);
       canvas.toBlob(blob => {
         const item = new ClipboardItem({ "image/png": blob });
         navigator.clipboard.write([item]);
@@ -59,7 +76,7 @@ function ContextSnapshot({ image, text }) {
           progress: undefined,
           theme: "light",
         })
-      });
+      }, 100); 
     });
   };
 
@@ -67,9 +84,6 @@ function ContextSnapshot({ image, text }) {
 
   const TextComponent = <TextComponentWrapper>
     <TextOutput text={text} />
-    <Margin mt={12} mb={12}>
-      <UrlWrapper>contextify.me</UrlWrapper>
-    </Margin>
   </TextComponentWrapper>
 
   return <Wrapper>

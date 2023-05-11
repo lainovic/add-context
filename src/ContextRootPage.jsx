@@ -13,12 +13,12 @@ const Wrapper = styled.div`
 
 function RootPage() {
   return (
-    <Wrapper>
-      <Padding pt={24} pb={24}>
+    <Padding pt={24} pb={24}>
+      <Wrapper>
         <Header />
         <ContextInput />
-      </Padding>
-    </Wrapper>
+      </Wrapper>
+    </Padding>
   );
 }
 

@@ -9,13 +9,18 @@ const Button = styled.button`
     font-family: "Roboto", sans-serif;
     text-transform: uppercase;
   }
-  background-color: black;
-  color: white;
   &:hover {
     background-color: white;
     border-color: var(--color-black);
     color: black;
   }
+  &:disabled{
+    background-color: white;
+    border-color: white;
+    color: gray;
+  }
+  background-color: black;
+  color: white;
 `;
 
 export default Button;

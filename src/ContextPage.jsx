@@ -4,10 +4,11 @@ import styled from "styled-components";
 import { useLoaderData } from "react-router-dom";
 
 import Header from "./Header";
-import Footer from "./Footer";
 import ContextSnapshot from "./ContextSnapshot";
+import { Padding } from "./helpers/layout.helpers";
 
 import { getContextFromDatabase } from "./helpers/db.helpers"
+import { BeatLoader } from "react-spinners";
 
 export async function loader({ params }) {
   return params.contextId;
@@ -31,23 +32,24 @@ function ContextPage() {
     fetchContext();
   }, []);
 
-  return <Wrapper>
-    <Header />
-    {context ?
-      <>
-        <ContextSnapshot
-          image={context.image}
-          text={context.text}
-        />
-        <Footer />
-      </>
-      :
-      <div>
-        Loading...
-      </div>
-    }
-  </Wrapper>
-};
+  return (
+    <Padding pt={23} pb={24}>
+      <Wrapper>
+        <Header />
+        {context ?
+          <>
+            <ContextSnapshot
+              image={context.image}
+              text={context.text}
+            />
+          </>
+          :
+          <BeatLoader />
+        }
+      </Wrapper>
+    </Padding>
+  );
+}
 
 export default ContextPage;
 

@@ -11,6 +11,7 @@ import Button from "./components/Button";
 import { Spacer } from "./helpers/layout.helpers";
 
 import { saveImageToBucket, saveContextToDatabase } from "./helpers/db.helpers";
+import { BeatLoader } from "react-spinners";
 
 const TextComponentWrapper = styled.div`
   display: flex;
@@ -41,16 +42,26 @@ function usePastedImage(setImage) {
 }
 
 async function useImageFromUrl(imageUrl, setImage) {
-  const res = await fetch(imageUrl)
-  const blob = await res.blob();
-  const type = res.headers.get("content-type");
-  setImage({ blob, type });
+  try {
+    const res = await fetch(imageUrl)
+    if (!res.ok) {
+      console.error(`---> "${imageUrl}" not a valid url`);
+      return;
+    }
+    const blob = await res.blob();
+    const type = res.headers.get("content-type");
+    if (!type.startsWith("image/")) {
+      console.error(`---> "${imageUrl}" is not a valid image URL.`);
+      return;
+    }
+    setImage({ blob, type });
+  } catch (error) {
+    console.error("--->", error);
+  }
 }
 
-async function onAddContext(image, text, setContextId) {
-  if (text === "" || !image) {
-    return;
-  }
+async function onAddContext(image, text, setContextId, setIsLoading) {
+  setIsLoading(true);
   try {
     const { url: imageUrl, error: imageUrlError } = await saveImageToBucket(image);
     if (imageUrlError) {
@@ -65,7 +76,7 @@ async function onAddContext(image, text, setContextId) {
     setContextId(entityId);
   } catch (error) {
     console.error(error);
-    return;
+    setIsLoading(false);
   }
 }
 
@@ -73,6 +84,7 @@ const ContextInput = () => {
   const [text, setText] = React.useState("");
   const [image, setImage] = React.useState(null);
   const [contextId, setContextId] = React.useState(null);
+  const [isLoading, setIsLoading] = React.useState(false);
   usePastedImage(setImage);
 
   if (contextId) {
@@ -89,9 +101,14 @@ const ContextInput = () => {
     <TextComponentWrapper>
       <TextInput setText={setText} />
       <Spacer h={24} />
-      <Button onClick={() => onAddContext(image, text, setContextId)}>
-        <span>Contextify</span>
-      </Button>
+      {isLoading ?
+        <BeatLoader /> :
+        <Button
+          disabled={text === "" || image === null}
+          onClick={() => onAddContext(image, text, setContextId, setIsLoading)}>
+          <span>Contextify</span>
+        </Button>
+      }
     </TextComponentWrapper>
 
   return <ContextTemplate
