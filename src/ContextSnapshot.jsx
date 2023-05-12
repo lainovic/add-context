@@ -59,24 +59,27 @@ function ContextSnapshot({ image, text }) {
       </Margin>
     )
     ReactDOM.createRoot(root).render(url);
-    captureRef.current.appendChild(root);
     setTimeout(async () => {
-      const canvas = await html2canvas(captureRef.current);
-      captureRef.current.removeChild(root);
+      const canvas = await html2canvas(captureRef.current, {
+        onclone: clonedDoc => {
+          const clonedCaptureRef = clonedDoc.getElementById(captureRef.current.id);
+          clonedCaptureRef.appendChild(root);
+        }
+      });
       canvas.toBlob(blob => {
         const item = new ClipboardItem({ "image/png": blob });
         navigator.clipboard.write([item]);
-        toast.info('Image copied into the clipboard.', {
+        toast.info('Image copied into the clipboard!', {
           position: "bottom-center",
-          autoClose: 1000,
+          autoClose: 200,
           hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
+          closeOnClick: false,
+          pauseOnHover: false,
           draggable: false,
           progress: undefined,
-          theme: "light",
+          theme: "dark",
         })
-      }, 100); 
+      }, 100);
     });
   };
 
@@ -87,7 +90,7 @@ function ContextSnapshot({ image, text }) {
   </TextComponentWrapper>
 
   return <Wrapper>
-    <ContextWrapper ref={captureRef}>
+    <ContextWrapper ref={captureRef} id="capturer">
       <ContextTemplate
         ImageComponent={ImageComponent}
         TextComponent={TextComponent}
@@ -97,15 +100,15 @@ function ContextSnapshot({ image, text }) {
       <Button onClick={handleCapture}><span>Copy as image</span></Button>
       <ToastContainer
         position="bottom-center"
-        autoClose={1000}
+        autoClose={200}
         hideProgressBar
         newestOnTop={false}
         closeOnClick
         rtl={false}
         pauseOnFocusLoss
         draggable={false}
-        pauseOnHover
-        theme="light"
+        pauseOnHover={false}
+        theme="dark"
       />
     </ButtonWrapper>
   </Wrapper>

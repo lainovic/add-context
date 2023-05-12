@@ -92,7 +92,7 @@ const ContextInput = () => {
   }
 
   const ImageComponent = image ? (
-    <ImageOutput image={URL.createObjectURL(image.blob)} />
+    <div><ImageOutput image={URL.createObjectURL(image.blob)} /></div>
   ) : (
     <ImageInput onImageUrlEntered={url => useImageFromUrl(url, setImage)} />
   )

@@ -3,7 +3,10 @@ function ImageOutput({ image }) {
     <img
       src={image}
       alt="A given image."
-      height="100%"
+      style={{
+        maxHeight: "40vh",
+        maxHeight: "40dvh",
+      }}
     ></img>
   )
 }

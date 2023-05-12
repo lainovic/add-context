@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
@@ -34,7 +35,7 @@ function Header() {
       </ImageWrapper>
       <TextWrapper>
         <Text>
-          context <span>matters</span>
+          <Link style={{ textDecoration: "none", color: "inherit" }} to="/">context <span>matters</span></Link>
         </Text>
       </TextWrapper>
     </Wrapper>
