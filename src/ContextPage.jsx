@@ -9,6 +9,7 @@ import { Padding } from "./helpers/layout.helpers";
 
 import { getContextFromDatabase } from "./helpers/db.helpers"
 import { BeatLoader } from "react-spinners";
+import ErrorBanner from "./components/ErrorBanner";
 
 export async function loader({ params }) {
   return params.contextId;
@@ -23,18 +24,32 @@ const Wrapper = styled.div`
 
 function ContextPage({ data }) {
   const [context, setContext] = React.useState(data);
-  console.log("--> ContextPage data", data)
+  const [isErrorVisible, setIsErrorVisible] = React.useState(false)
   const contextId = useLoaderData();
   React.useEffect(() => {
+    if (context) return;
     async function fetchContext() {
-      const { image, text } = await getContextFromDatabase(contextId);
+      if (!contextId) return;
+      const res = await getContextFromDatabase(contextId);
+      if (res.error) {
+        console.log(`---> error from the database: ${res.error}`);
+        setIsErrorVisible(true);
+        setTimeout(() => {
+          setIsErrorVisible(false);
+        }, 2000);
+        return;
+      }
+      const { image, text } = res;
       setContext({ image, text });
     }
-    if (!context) fetchContext();
+    fetchContext();
   }, []);
 
   return (
     <Padding pt={24} pb={24}>
+      <ErrorBanner isVisible={isErrorVisible}>
+        Failed to fetch the context 😔
+      </ErrorBanner>
       <Wrapper>
         <Header />
         {context ?

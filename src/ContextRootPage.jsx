@@ -7,6 +7,8 @@ import Header from "./Header";
 import ContextInput from "./ContextInput";
 import ContextPage from "./ContextPage";
 
+import ErrorBanner from "./components/ErrorBanner";
+
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -15,30 +17,7 @@ const Wrapper = styled.div`
   height: 100%;
 `;
 
-const ErrorBanner = ({ isVisible, children }) => {
-  const bannerStyles = {
-    position: 'fixed',
-    top: isVisible ? '0' : '-50px',
-    left: '0',
-    right: '0',
-    height: '50px',
-    backgroundColor: 'darkred',
-    color: 'white',
-    fontFamily: "Alkatra",
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    transition: 'top 0.6s', // Animation duration
-  };
-
-  return (
-    <div style={bannerStyles}>
-      {children}
-    </div>
-  );
-};
-
-function Foo({ entityId, image, text }) {
+function ContextPageProxy({ entityId, image, text }) {
   const isUploaded = entityId && entityId !== "fail";
   return <>
     {isUploaded ?
@@ -64,10 +43,10 @@ function RootPage() {
   }, [data]);
   return <>
     <ErrorBanner isVisible={isErrorVisible}>
-      Upload failed, but you can still copy an image into your clipboard.
+      Upload failed, but you can still copy an image into your clipboard!
     </ErrorBanner>
     {
-      data ? <Foo {...data} /> :
+      data ? <ContextPageProxy {...data} /> :
         < Wrapper >
           <Header />
           <ContextInput onInputEntered={setData} />

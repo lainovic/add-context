@@ -64,7 +64,7 @@ export async function getContextFromDatabase(contextId) {
 		return { error };
 	}
 	if (!data) {
-		return null;
+		return { error: "wtf no data" };
 	}
 	const imageUrl = data.imageUrl;
 	console.log("---> sending the request to the storage for the image: ", imageUrl);

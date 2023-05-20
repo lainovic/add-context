@@ -32,3 +32,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   </React.StrictMode>
 )
 
+// TODOs:
+// - replace console logs with proper logging
+//
