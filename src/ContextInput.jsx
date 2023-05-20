@@ -1,17 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Navigate } from "react-router-dom";
+import { BeatLoader } from "react-spinners";
 
 import ImageInput from "./components/ImageInput";
 import TextInput from "./components/TextInput";
 import ContextTemplate from "./components/ContextTemplate"
 import ImageOutput from "./components/ImageOutput";
 import Button from "./components/Button";
+
 import { Spacer } from "./helpers/layout.helpers";
 
 import { saveImageToBucket, saveContextToDatabase } from "./helpers/db.helpers";
-import { BeatLoader } from "react-spinners";
 
 const TextComponentWrapper = styled.div`
   display: flex;
@@ -60,7 +60,7 @@ async function useImageFromUrl(imageUrl, setImage) {
   }
 }
 
-async function onAddContext(image, text, setContextId, setIsLoading) {
+async function onAddContext(image, text, setEntityId, setIsLoading) {
   setIsLoading(true);
   try {
     const { url: imageUrl, error: imageUrlError } = await saveImageToBucket(image);
@@ -68,27 +68,28 @@ async function onAddContext(image, text, setContextId, setIsLoading) {
       console.error({ imageUrlError });
       return;
     }
-    const { id: entityId, error: entityUrlError } = await saveContextToDatabase(imageUrl, text);
-    if (entityUrlError) {
-      console.error({ entityUrlError });
+    const { id: entityId, error: entityIdError } = await saveContextToDatabase(imageUrl, text);
+    if (entityIdError) {
+      console.error({ entityIdError });
       return;
     }
-    setContextId(entityId);
+    setEntityId(entityId);
   } catch (error) {
     console.error(error);
-    setIsLoading(false);
+    setEntityId("fail");
   }
 }
 
-const ContextInput = () => {
-  const [text, setText] = React.useState("");
+const ContextInput = ({ onInputEntered }) => {
   const [image, setImage] = React.useState(null);
-  const [contextId, setContextId] = React.useState(null);
+  const [text, setText] = React.useState("");
+  const [entityId, setEntityId] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
   usePastedImage(setImage);
 
-  if (contextId) {
-    return <Navigate to={`/${contextId}`} replace={true} />
+  if (entityId) {
+    if (onInputEntered) onInputEntered({ image, text, entityId })
+    return;
   }
 
   const ImageComponent = image ? (
@@ -105,7 +106,7 @@ const ContextInput = () => {
         <BeatLoader /> :
         <Button
           disabled={text === "" || image === null}
-          onClick={() => onAddContext(image, text, setContextId, setIsLoading)}>
+          onClick={() => onAddContext(image, text, setEntityId, setIsLoading)}>
           <span>Contextify</span>
         </Button>
       }

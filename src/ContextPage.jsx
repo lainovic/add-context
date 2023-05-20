@@ -21,19 +21,20 @@ const Wrapper = styled.div`
   padding-bottom: 12px;
 :`;
 
-function ContextPage() {
-  const [context, setContext] = React.useState(null);
+function ContextPage({ data }) {
+  const [context, setContext] = React.useState(data);
+  console.log("--> ContextPage data", data)
   const contextId = useLoaderData();
   React.useEffect(() => {
     async function fetchContext() {
       const { image, text } = await getContextFromDatabase(contextId);
       setContext({ image, text });
     }
-    fetchContext();
+    if (!context) fetchContext();
   }, []);
 
   return (
-    <Padding pt={23} pb={24}>
+    <Padding pt={24} pb={24}>
       <Wrapper>
         <Header />
         {context ?
